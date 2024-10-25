@@ -1,70 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/bloc_test/setting/theme/theme.dart';
+import 'package:flutter_application_1/db/hive_config.dart';
+import 'package:flutter_application_1/root_bloc/root_bloc.dart';
+import 'package:flutter_application_1/root_bloc/root_state.dart';
+import 'package:flutter_application_1/widgets/bottom_nav_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await openBox();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo'),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
+class _MyAppState extends State<MyApp> {
+  late ThemeData getTheme;
+  late String theme;
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    theme = box.get('theme');
+    print('theme $theme');
+    getTheme = _getTheme(theme);
+  }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  ThemeData _getTheme(String themeName) {
+    switch (themeName) {
+      case 'black':
+        return appTheme['black']!;
+      case 'pink':
+        return appTheme['pink']!;
+      case 'red':
+        return appTheme['red']!;
+      case 'blue':
+        return appTheme['blue']!;
+      case 'green':
+        return appTheme['green']!;
+      case 'gray':
+        return appTheme['gray']!;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+      default:
+        return appTheme['black']!;
+    }
+  }
+
+  void listener(BuildContext context, RootState state) {
+    if (state is ChangeThemeState) {
+      print('State receive ${state.themeName}');
+      getTheme = _getTheme(state.themeName);
+      print(Theme.of(context).primaryColor);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-   
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    return BlocProvider(
+      create: (context) => RootBloc(),
+      child: BlocConsumer<RootBloc, RootState>(
+          listener: listener,
+          builder: (context, state) {
+            return MaterialApp(
+              title: 'Flutter Demo',
+              home: const BottomNavBar(),
+              theme: getTheme,
+              debugShowCheckedModeBanner: false,
+            );
+          }),
     );
   }
 }
