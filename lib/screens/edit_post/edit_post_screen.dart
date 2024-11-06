@@ -19,7 +19,7 @@ class EditPostScreen extends StatelessWidget {
             headers: {
               "Content-Type": "application/json",
               "Authorization":
-                  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7Il9pZCI6IjY3MDY0MTkxN2Y4OTAwMTUxODcyMTc3ZSIsIm5hbWUiOiJvYyBjaMOzIDIiLCJwYXNzd29yZCI6IiQyYiQxMCQxQmlJV21LOUZhMGZxWmVIeFgzN3Uubmxyb245dEU3REhMRk1pQ3F6QkU4RmJOZ1pTMnNCVyIsImVtYWlsIjoib2MxQGV4YW1wbGUuY29tIiwiZGV2aWNlc1Rva2VuIjpbXSwiZm9sbG93ZXJzIjpbIjY3MDY1N2ZhN2Y4OTAwMTUxODcyMTc5OCJdLCJmb2xsb3dpbmciOltdLCJjcmVhdGVkQXQiOiIyMDI0LTEwLTA5VDA4OjQwOjQ5LjgyMloiLCJ1cGRhdGVkQXQiOiIyMDI0LTEwLTExVDEwOjA2OjIyLjY0OVoiLCJfX3YiOjB9LCJpYXQiOjE3Mjk0OTE1MjQsImV4cCI6MTczMDM1NTUyNH0.Vuaovk9qV8fDgS3aVly6agUCb1HIy7wUCcFJrDSHHZE"
+                  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7Il9pZCI6IjY3MDhjZmY3M2MwM2YwZDJiZmMwMDgxNyIsIm5hbWUiOiJvYyBjaMOzIDIiLCJwYXNzd29yZCI6IiQyYiQxMCR4Rnk5NWJoTkNFUjB3a01ZOG5DeHplZkplcmg0Q3hBZXAvM1ZvWmtVLnM5NWxFOXFTbS53UyIsImVtYWlsIjoib2MzQGV4YW1wbGUuY29tIiwiZGV2aWNlc1Rva2VuIjpbXSwiZm9sbG93ZXJzIjpbXSwiZm9sbG93aW5nIjpbXSwiY3JlYXRlZEF0IjoiMjAyNC0xMC0xMVQwNzoxMjo1NS42NTdaIiwidXBkYXRlZEF0IjoiMjAyNC0xMC0xMVQwOTo1NDo0NC4wODZaIiwiX192IjowfSwiaWF0IjoxNzMwNzA3ODYzLCJleHAiOjE3MzE1NzE4NjN9.QiBjBeGdnmjDF5y167MvNk0XUxUQFA1V9ywpb1QSwRQ"
             },
             body: jsonEncode(
                 {'id': postResponse.id, 'content': edtPostController.text}));

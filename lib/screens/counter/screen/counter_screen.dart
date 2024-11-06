@@ -40,7 +40,7 @@ class _BodyState extends State<Body> {
     final MediaQueryData data = MediaQuery.of(context);
     EdgeInsets padding = data.padding;
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       appBar: AppBar(
         title: const Text('App bar'),
         leading: Builder(

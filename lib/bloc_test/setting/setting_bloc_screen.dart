@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/bloc_test/demo/demo_first.dart';
 import 'package:flutter_application_1/db/hive_config.dart';
 import 'package:flutter_application_1/root_bloc/root_bloc.dart';
 import 'package:flutter_application_1/root_bloc/root_event.dart';
@@ -14,12 +15,15 @@ class SettingBlocScreen extends StatefulWidget {
 
 class _SettingBlocScreenState extends State<SettingBlocScreen> {
   final listTheme = [
-    ThemeE(color: 'red', name: 'Red'),
-    ThemeE(color: 'pink', name: 'Pink'),
-    ThemeE(color: 'gray', name: 'Gray'),
-    ThemeE(color: 'green', name: 'Green'),
-    ThemeE(color: 'blue', name: 'Blue'),
-    ThemeE(color: 'black', name: 'Black'),
+    ThemeE(color: 'red', name: 'Red', listTheme: [
+      ThemeE(color: 'jade', name: 'Jade'),
+      ThemeE(color: 'royal', name: 'Royal')
+    ]),
+    ThemeE(color: 'pink', name: 'Pink', listTheme: []),
+    ThemeE(color: 'gray', name: 'Gray', listTheme: []),
+    ThemeE(color: 'green', name: 'Green', listTheme: []),
+    ThemeE(color: 'blue', name: 'Blue', listTheme: []),
+    ThemeE(color: 'black', name: 'Black', listTheme: []),
   ];
 
   @override
@@ -32,36 +36,84 @@ class _SettingBlocScreenState extends State<SettingBlocScreen> {
         // ),
         body: Column(
           children: [
-            Text('theme.name',
-                              style: Theme.of(context).textTheme.bodySmall),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const DemoFirst(),));
+              },
+              child: Text('theme.name', style: Theme.of(context).textTheme.bodySmall)),
             Expanded(
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
+              child: ListView.builder(
+                  // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: 3,
+                  //   crossAxisSpacing: 10,
+                  //   mainAxisSpacing: 10,
+                  // ),
                   itemCount: listTheme.length,
                   itemBuilder: (BuildContext context, int index) {
                     final theme = listTheme[index];
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Press');
-                            context
-                                .read<RootBloc>()
-                                .add(ChangeThemeEvent(themeName: theme.color));
-                            box.put('theme', theme.color);
-                          },
-                          child: Text(theme.name,
-                              style: Theme.of(context).textTheme.bodySmall),
+                    return Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: context.read<RootBloc>().index == index
+                                ? Colors.blueAccent
+                                : Colors.pink,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                print('Press');
+                                context.read<RootBloc>().add(ChangeThemeEvent(
+                                    themeName: theme.color,
+                                    index: index,
+                                    isExpand: theme.listTheme!.isNotEmpty));
+                                box.put('theme', theme.color);
+                              },
+                              child: Text(theme.name,
+                                  style: Theme.of(context).textTheme.bodySmall),
+                            ),
+                          ),
                         ),
-                      ),
+                        Visibility(
+                          visible: context.read<RootBloc>().isExpand,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: theme.listTheme?.length ?? 0,
+                              itemBuilder: (BuildContext context, int i) {
+                                return Container(
+                                  decoration: const BoxDecoration(
+                                      gradient: LinearGradient(
+                                    colors: [Colors.black, Colors.transparent],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.center,
+                                  )),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Center(
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            print('object');
+                                            context.read<RootBloc>().add(
+                                                ChangeThemeEvent(
+                                                    themeName: theme
+                                                            .listTheme?[i]
+                                                            .color ??
+                                                        '',
+                                                    index: index,
+                                                    isExpand: true));
+                                            box.put('theme', theme.color);
+                                          },
+                                          child: Text(
+                                              theme.listTheme?[index].name ??
+                                                  '')),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        )
+                      ],
                     );
                   }),
             ),
@@ -75,5 +127,8 @@ class _SettingBlocScreenState extends State<SettingBlocScreen> {
 class ThemeE {
   final String name;
   final String color;
-  ThemeE({required this.color, required this.name});
+  final List<ThemeE>? listTheme;
+  final bool? isExpand;
+  ThemeE(
+      {required this.color, required this.name, this.listTheme, this.isExpand});
 }

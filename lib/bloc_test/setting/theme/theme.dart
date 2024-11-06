@@ -38,4 +38,16 @@ final appTheme = {
       brightness: Brightness.dark,
       textTheme: const TextTheme(
           bodySmall: TextStyle(fontSize: 24, color: Colors.red))),
+  'jade': ThemeData(
+      useMaterial3: true,
+      primaryColor: Colors.purple,
+      brightness: Brightness.light,
+      textTheme: const TextTheme(
+          bodySmall: TextStyle(fontSize: 24, color: Colors.purple))),
+  'royal': ThemeData(
+      useMaterial3: true,
+      primaryColor: Colors.teal,
+      brightness: Brightness.light,
+      textTheme: const TextTheme(
+          bodySmall: TextStyle(fontSize: 24, color: Colors.brown))),
 };

@@ -6,5 +6,11 @@ final box = Hive.box('TestApp');
 Future<dynamic> openBox() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UserTAdapter());
-  return Hive.openBox('TestApp');
+  Hive.openBox('TestApp');
+  await Hive.openBox('SETTINGS');
+  await Hive.openBox('LIBRARY');
+  await Hive.openBox('SEARCH_HISTORY');
+  await Hive.openBox('SONG_HISTORY');
+  await Hive.openBox('FAVOURITES');
+  await Hive.openBox('DOWNLOADS');
 }

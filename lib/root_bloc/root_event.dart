@@ -4,5 +4,7 @@ abstract class RootEvent {}
 
 class ChangeThemeEvent extends RootEvent {
   final String themeName;
-  ChangeThemeEvent({required this.themeName});
+  final int? index;
+  final bool? isExpand;
+  ChangeThemeEvent({required this.themeName, this.index , this.isExpand});
 }

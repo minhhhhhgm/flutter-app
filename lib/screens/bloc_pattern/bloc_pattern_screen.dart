@@ -27,7 +27,7 @@ class _BlocPatternScreenState extends State<BlocPatternScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bloc Pattern'),
+        title: const Text('Test bl'),
         backgroundColor: Colors.pink,
       ),
       body: Center(
